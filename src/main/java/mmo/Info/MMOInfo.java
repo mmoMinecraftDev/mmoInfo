@@ -94,6 +94,9 @@ public class MMOInfo extends MMOPlugin {
 
 	@Override
 	public void onSpoutCraftPlayer(SpoutPlayer player) {
+		if (!player.hasPermission("mmo.info.display")) {
+			return;
+		}
 		Container left, center, right, current;
 		Color back = new Color(0f, 0f, 0f, 0.75f);
 		Color bottom = new Color(1f, 1f, 1f, 0.75f);
