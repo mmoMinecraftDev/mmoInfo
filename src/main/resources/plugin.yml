@@ -1,0 +1,14 @@
+name: mmoInfo
+main: mmo.Info.MMOInfo
+version: 0.1
+website: http://forums.bukkit.org/threads/
+author: Rycochet <rycochet@rycochet.com>
+depend: [mmoCore]
+
+description: Info bar at the top of the screen
+
+commands:
+  info:
+    description: Set the info to display
+    aliases: [mmoinfo]
+    usage: /info left|center|right <list of Info modules>
