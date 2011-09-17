@@ -11,4 +11,9 @@ commands:
   info:
     description: Set the info to display
     aliases: [mmoinfo]
-    usage: /info left|center|right <list of Info modules>
+    usage: /info [three columns separated by ~, tokens within {}]
+
+permissions:
+  mmo.info.display:
+    description: Shows the info bar
+    default: true
