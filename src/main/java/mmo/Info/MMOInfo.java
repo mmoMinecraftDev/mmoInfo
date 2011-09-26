@@ -17,13 +17,13 @@
 package mmo.Info;
 
 import java.util.Arrays;
-import java.util.BitSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import mmo.Core.MMO;
-import mmo.CoreAPI.MMOListener;
 import mmo.Core.MMOPlugin;
+import mmo.Core.util.EnumBitSet;
 import mmo.CoreAPI.MMOHUDEvent;
+import mmo.CoreAPI.MMOListener;
 import mmo.InfoAPI.MMOInfoEvent;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -52,8 +52,8 @@ public class MMOInfo extends MMOPlugin {
 	int height = 10, offset = 1;
 
 	@Override
-	public BitSet mmoSupport(BitSet support) {
-		support.set(MMO_PLAYER);
+	public EnumBitSet mmoSupport(EnumBitSet support) {
+		support.set(Support.MMO_PLAYER);
 		return support;
 	}
 
