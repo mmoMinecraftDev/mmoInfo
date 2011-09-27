@@ -22,9 +22,9 @@ import java.util.regex.Pattern;
 import mmo.Core.MMO;
 import mmo.Core.MMOPlugin;
 import mmo.Core.util.EnumBitSet;
-import mmo.CoreAPI.MMOHUDEvent;
-import mmo.CoreAPI.MMOListener;
-import mmo.InfoAPI.MMOInfoEvent;
+import mmo.Core.CoreAPI.MMOHUDEvent;
+import mmo.Core.InfoAPI.MMOInfoEvent;
+import mmo.Core.MMOListener;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -127,7 +127,7 @@ public class MMOInfo extends MMOPlugin {
 				}
 			} else if (match.group(2) != null) {
 				String[] args = MMO.smartSplit(match.group(2));
-				MMOInfoEvent event = new MMOInfoEvent(player, args[0], Arrays.copyOfRange(args, 1, args.length));
+				MMOInfoEventAPI event = new MMOInfoEventAPI(player, args[0], Arrays.copyOfRange(args, 1, args.length));
 				pm.callEvent(event);
 				if (!event.isCancelled() && event.getWidget() != null) {
 					Widget widget = event.getWidget();
