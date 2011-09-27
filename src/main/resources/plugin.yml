@@ -1,6 +1,6 @@
 name: mmoInfo
 main: mmo.Info.MMOInfo
-version: 0.1
+version: 1.0
 website: http://forums.bukkit.org/threads/
 author: Rycochet <rycochet@rycochet.com>
 depend: [mmoCore]
