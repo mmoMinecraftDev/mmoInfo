@@ -108,13 +108,52 @@ public class MMOInfo extends MMOPlugin {
 		Screen screen = player.getMainScreen();
 
 		screen.removeWidgets(this); // In case we're re-creating the bar on config change
-		screen.attachWidget(plugin, new GenericGradient().setBottomColor(back).setTopColor(back).setMaxWidth(2048).setWidth(2048).setHeight(height + offset).setAnchor(WidgetAnchor.TOP_LEFT).setPriority(RenderPriority.Highest));
-		screen.attachWidget(plugin, new GenericGradient().setBottomColor(bottom).setTopColor(bottom).setY(height + offset).setMaxWidth(2048).setWidth(2048).setHeight(1).setAnchor(WidgetAnchor.TOP_LEFT).setPriority(RenderPriority.Highest));
-		screen.attachWidget(plugin, new GenericContainer(
-				current = left = (Container) new GenericContainer().setLayout(ContainerType.HORIZONTAL).setAlign(WidgetAnchor.TOP_LEFT).setAnchor(WidgetAnchor.TOP_LEFT).setWidth(427).setHeight(height).setY(offset),
-				center = (Container) new GenericContainer().setLayout(ContainerType.HORIZONTAL).setAlign(WidgetAnchor.TOP_CENTER).setAnchor(WidgetAnchor.TOP_CENTER).setWidth(427).setHeight(height).setX(-213).setY(offset),
-				right = (Container) new GenericContainer().setLayout(ContainerType.HORIZONTAL).setAlign(WidgetAnchor.TOP_RIGHT).setAnchor(WidgetAnchor.TOP_RIGHT).setWidth(427).setHeight(height).setX(-427).setY(offset)));
-
+		screen.attachWidget(plugin, new GenericGradient() //
+				.setBottomColor(back) //
+				.setTopColor(back) //
+				.setMaxWidth(2048) //
+				.setX(0) //
+				.setY(0) //
+				.setWidth(2048) //
+				.setHeight(height + offset) //
+				.setAnchor(WidgetAnchor.TOP_LEFT) //
+				.setPriority(RenderPriority.Highest));
+		screen.attachWidget(plugin, new GenericGradient() //
+				.setBottomColor(bottom) //
+				.setTopColor(bottom) //
+				.setX(0) //
+				.setY(height + offset) //
+				.setMaxWidth(2048) //
+				.setWidth(2048) //
+				.setHeight(1) //
+				.setAnchor(WidgetAnchor.TOP_LEFT) //
+				.setPriority(RenderPriority.Highest));
+		screen.attachWidget(plugin, left = (Container) new GenericContainer() //
+				.setLayout(ContainerType.HORIZONTAL) //
+				.setAlign(WidgetAnchor.TOP_LEFT) //
+				.setAnchor(WidgetAnchor.TOP_LEFT) //
+				.setWidth(427) //
+				.setHeight(height) //
+				.setX(0) //
+				.setY(offset));
+		screen.attachWidget(plugin, center = (Container) new GenericContainer() //
+				.setLayout(ContainerType.HORIZONTAL) //
+				.setAlign(WidgetAnchor.TOP_CENTER) //
+				.setAnchor(WidgetAnchor.TOP_CENTER) //
+				.setWidth(427) //
+				.setHeight(height) //
+				.setX(-213) //
+				.setY(offset));
+		screen.attachWidget(plugin, right = (Container) new GenericContainer() //
+				.setLayout(ContainerType.HORIZONTAL) //
+				.setAlign(WidgetAnchor.TOP_RIGHT) //
+				.setAnchor(WidgetAnchor.TOP_RIGHT) //
+				.setWidth(427) //
+				.setHeight(height) //
+				.setX(-427) //
+				.setY(offset));
+//		screen.attachWidget(plugin, new GenericContainer(left, center, right));
+		current = left;
 		Matcher match = Pattern.compile("[^{~]+|(~)|\\{([^}]*)\\}").matcher(config_info);
 		while (match.find()) {
 			if (match.group(1) != null) {
@@ -130,14 +169,14 @@ public class MMOInfo extends MMOPlugin {
 				MMOInfoEventAPI event = new MMOInfoEventAPI(player, args[0], Arrays.copyOfRange(args, 1, args.length));
 				pm.callEvent(event);
 				if (!event.isCancelled() && event.getWidget() != null) {
-					Widget widget = event.getWidget();
+					Widget widget = event.getWidget().setMargin(0, 3);
 					Plugin widgetPlugin = event.getPlugin();
 					if (event.getIcon() != null) {
 						Widget icon = new GenericTexture(event.getIcon()).setMargin(0, 0, 0, 3).setHeight(8).setWidth(8).setFixed(true);
-						screen.attachWidget(widgetPlugin, icon);
+						screen.attachWidget(widgetPlugin, icon); // Widget owner
 						current.addChild(icon);
 					}
-					screen.attachWidget(widgetPlugin, widget.setMargin(0, 3));
+					screen.attachWidget(widgetPlugin, widget); // Widget owner
 					current.addChild(widget);
 				}
 			} else {
