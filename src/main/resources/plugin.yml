@@ -3,7 +3,7 @@ main: mmo.Info.MMOInfo
 version: 1.0
 website: http://forums.bukkit.org/threads/
 author: Rycochet <rycochet@rycochet.com>
-depend: [mmoCore]
+depend: [Spout,mmoCore]
 
 description: Info bar at the top of the screen
 
