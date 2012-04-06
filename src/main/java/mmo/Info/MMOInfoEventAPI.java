@@ -17,13 +17,16 @@
 package mmo.Info;
 
 import mmo.Core.InfoAPI.MMOInfoEvent;
-import org.bukkit.event.Event;
+
+import org.bukkit.event.Cancellable;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
+
 import org.getspout.spoutapi.gui.Widget;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-public class MMOInfoEventAPI extends Event implements MMOInfoEvent {
-
+public class MMOInfoEventAPI extends MMOInfoEvent implements Cancellable {
+	private static final HandlerList handlers = new HandlerList();
 	SpoutPlayer player;
 	String token;
 	String[] args;
@@ -33,34 +36,28 @@ public class MMOInfoEventAPI extends Event implements MMOInfoEvent {
 	boolean cancelled = false;
 
 	public MMOInfoEventAPI(SpoutPlayer player, String token, String[] args) {
-		super("mmoInfoEvent");
 		this.player = player;
 		this.token = token;
 		this.args = args;
 	}
 
-	@Override
 	public SpoutPlayer getPlayer() {
 		return player;
 	}
 
-	@Override
 	public boolean isToken(String token) {
 		return token.equalsIgnoreCase(this.token);
 	}
 
-	@Override
 	public String[] getArgs() {
 		return args.clone();
 	}
 
-	@Override
 	public void setWidget(Plugin p, Widget widget) {
 		this.widget = widget;
 		this.plugin = p;
 	}
 
-	@Override
 	public Widget getWidget() {
 		return widget;
 	}
@@ -69,23 +66,27 @@ public class MMOInfoEventAPI extends Event implements MMOInfoEvent {
 		return plugin;
 	}
 
-	@Override
 	public void setIcon(String icon) {
 		this.icon = icon;
 	}
 
-	@Override
 	public String getIcon() {
 		return icon;
 	}
 
-	@Override
 	public boolean isCancelled() {
 		return cancelled;
 	}
 
-	@Override
 	public void setCancelled(boolean cancel) {
 		cancelled = cancel;
+	}
+
+	public HandlerList getHandlers() {
+		return handlers;
+	}
+
+	public static HandlerList getHandlerList() {
+		return handlers;
 	}
 }

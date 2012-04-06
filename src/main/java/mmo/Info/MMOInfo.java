@@ -19,19 +19,20 @@ package mmo.Info;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import mmo.Core.MMO;
-import mmo.Core.MMOPlugin;
-import mmo.Core.util.EnumBitSet;
+
 import mmo.Core.CoreAPI.MMOHUDEvent;
 import mmo.Core.InfoAPI.MMOInfoEvent;
-import mmo.Core.MMOListener;
+import mmo.Core.MMO;
+import mmo.Core.MMOPlugin;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event.Type;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.util.config.Configuration;
+
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.gui.Color;
 import org.getspout.spoutapi.gui.Container;
@@ -46,46 +47,37 @@ import org.getspout.spoutapi.gui.Widget;
 import org.getspout.spoutapi.gui.WidgetAnchor;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-public class MMOInfo extends MMOPlugin {
-
+public class MMOInfo extends MMOPlugin implements Listener {
 	static String config_info = "{name}~mmoMinecraft~{compass}{coords}";
 	int height = 10, offset = 1;
 
 	@Override
-	public EnumBitSet mmoSupport(EnumBitSet support) {
-		support.set(Support.MMO_PLAYER);
-		return support;
-	}
-
-	@Override
 	public void onEnable() {
 		super.onEnable();
-		pm.registerEvent(Type.CUSTOM_EVENT,
-				new MMOListener() {
-
-					@Override
-					public void onMMOInfo(MMOInfoEvent event) {
-						if (event.isToken("name")) {
-							Player player = event.getPlayer();
-							event.setWidget(plugin, new GenericLabel(MMO.getName(player)).setResize(true).setFixed(true));
-						}
-					}
-
-					@Override
-					public void onMMOHUD(MMOHUDEvent event) {
-						Player player = event.getPlayer();
-						if (player.hasPermission("mmo.info.display")) {
-							if (event.getAnchor() == WidgetAnchor.TOP_LEFT || event.getAnchor() == WidgetAnchor.TOP_CENTER || event.getAnchor() == WidgetAnchor.TOP_RIGHT) {
-								event.setOffsetY(event.getOffsetY() + height + offset + 1);
-							}
-						}
-					}
-				}, Priority.Normal, this);
+		getServer().getPluginManager().registerEvents(this, this);
 	}
 
 	@Override
-	public void loadConfiguration(Configuration cfg) {
+	public void loadConfiguration(FileConfiguration cfg) {
 		config_info = cfg.getString("info", config_info);
+	}
+
+	@EventHandler
+	public void onMMOHUD(MMOHUDEvent event) {
+		Player player = event.getPlayer();
+		if (player.hasPermission("mmo.info.display")) {
+			if (event.getAnchor() == WidgetAnchor.TOP_LEFT || event.getAnchor() == WidgetAnchor.TOP_CENTER || event.getAnchor() == WidgetAnchor.TOP_RIGHT) {
+				event.setOffsetY(event.getOffsetY() + height + offset + 1);
+			}
+		}
+	}
+
+	@EventHandler
+	public void onMMOInfo(MMOInfoEvent event) {
+		if (event.isToken("name")) {
+			SpoutPlayer player = event.getPlayer();
+			event.setWidget(plugin, new GenericLabel(MMO.getName(player)).setResize(true).setFixed(true));
+		}
 	}
 
 	@Override
@@ -96,8 +88,7 @@ public class MMOInfo extends MMOPlugin {
 		}
 		return false;
 	}
-
-	@Override
+	
 	public void onSpoutCraftPlayer(SpoutPlayer player) {
 		if (!player.hasPermission("mmo.info.display")) {
 			return;
@@ -152,7 +143,7 @@ public class MMOInfo extends MMOPlugin {
 				.setHeight(height) //
 				.setX(-427) //
 				.setY(offset));
-//		screen.attachWidget(plugin, new GenericContainer(left, center, right));
+		//		screen.attachWidget(plugin, new GenericContainer(left, center, right));
 		current = left;
 		Matcher match = Pattern.compile("[^{~]+|(~)|\\{([^}]*)\\}").matcher(config_info);
 		while (match.find()) {
