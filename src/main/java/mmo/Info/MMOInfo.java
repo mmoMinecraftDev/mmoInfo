@@ -34,6 +34,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
 import org.getspout.spoutapi.SpoutManager;
+import org.getspout.spoutapi.event.spout.SpoutCraftEnableEvent;
 import org.getspout.spoutapi.gui.Color;
 import org.getspout.spoutapi.gui.Container;
 import org.getspout.spoutapi.gui.ContainerType;
@@ -82,11 +83,27 @@ public class MMOInfo extends MMOPlugin implements Listener {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		if(!(sender instanceof SpoutPlayer)) {
+			sender.sendMessage("Only players can have an info bar.");
+			return true;
+		}
 		if (command.getName().equalsIgnoreCase("info")) {
-			onSpoutCraftPlayer(SpoutManager.getPlayer((Player) sender));
+			Widget[] widgets = ((SpoutPlayer) sender).getMainScreen().getAttachedWidgets();
+			boolean on = false;
+			for(Widget w : widgets) if(w.getPlugin().equals(this)) {
+				on = true;
+				break;
+			}
+			if(on) ((SpoutPlayer) sender).getMainScreen().removeWidgets(this);
+			else onSpoutCraftPlayer(SpoutManager.getPlayer((Player) sender));
 			return true;
 		}
 		return false;
+	}
+	
+	@EventHandler
+	public void onSpoutcraftEnable(SpoutCraftEnableEvent e) {
+		onSpoutCraftPlayer(e.getPlayer());
 	}
 	
 	public void onSpoutCraftPlayer(SpoutPlayer player) {

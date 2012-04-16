@@ -19,14 +19,12 @@ package mmo.Info;
 import mmo.Core.InfoAPI.MMOInfoEvent;
 
 import org.bukkit.event.Cancellable;
-import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 
 import org.getspout.spoutapi.gui.Widget;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class MMOInfoEventAPI extends MMOInfoEvent implements Cancellable {
-	private static final HandlerList handlers = new HandlerList();
 	SpoutPlayer player;
 	String token;
 	String[] args;
@@ -80,13 +78,5 @@ public class MMOInfoEventAPI extends MMOInfoEvent implements Cancellable {
 
 	public void setCancelled(boolean cancel) {
 		cancelled = cancel;
-	}
-
-	public HandlerList getHandlers() {
-		return handlers;
-	}
-
-	public static HandlerList getHandlerList() {
-		return handlers;
 	}
 }
