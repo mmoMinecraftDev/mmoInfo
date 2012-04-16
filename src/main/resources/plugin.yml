@@ -1,8 +1,8 @@
 name: mmoInfo
 main: mmo.Info.MMOInfo
-version: 1.1
+version: 1.2
 website: http://forums.bukkit.org/threads/
-author: Rycochet <rycochet@rycochet.com>
+author: Rycochet <rycochet@rycochet.com>, Dockter, Pamelloes
 depend: [Spout,mmoCore]
 
 description: Info bar at the top of the screen
