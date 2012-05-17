@@ -21,6 +21,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import mmo.Core.CoreAPI.MMOHUDEvent;
 import mmo.Core.InfoAPI.MMOInfoEvent;
+import mmo.Core.MMOPlugin.Support;
+import mmo.Core.util.EnumBitSet;
 import mmo.Core.MMO;
 import mmo.Core.MMOPlugin;
 import org.bukkit.Server;
@@ -53,6 +55,12 @@ public class MMOInfo extends MMOPlugin implements Listener {
 	static String config_info = "{name}~mmoMinecraft~{compass}{coords}";
 	int height = 10; int offset = 1;
 
+	@Override
+	public EnumBitSet mmoSupport(EnumBitSet support) {
+		support.set(Support.MMO_AUTO_EXTRACT);
+		return support;
+	}
+	
 	@Override
 	public void onEnable()
 	{
