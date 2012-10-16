@@ -1,2 +1,6 @@
 # #Info Configuration
+tokenlines: 1
 info: '{name}{gold}~mmoMinecraft~{compass}{coords}'
+info2: '{name}{gold}~mmoMinecraft~{compass}{coords}'
+info3: '{name}{gold}~mmoMinecraft~{compass}{coords}'
+info4: '{name}{gold}~mmoMinecraft~{compass}{coords}'
