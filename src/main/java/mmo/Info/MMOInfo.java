@@ -25,7 +25,10 @@ import mmo.Core.MMOPlugin.Support;
 import mmo.Core.util.EnumBitSet;
 import mmo.Core.MMO;
 import mmo.Core.MMOPlugin;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Server;
+import org.bukkit.block.Furnace;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -33,6 +36,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.getspout.spoutapi.SpoutManager;
@@ -57,6 +61,10 @@ public class MMOInfo extends MMOPlugin implements Listener {
 	static String config_info2 = config_info1;
 	static String config_info3 = config_info1;
 	static String config_info4 = config_info1;
+	static boolean config_hidehungergui = false;
+	static boolean config_hidehealthgui = false;
+	static boolean config_hidearmorgui = false;
+	static boolean config_hideexpgui = false;
 	static int token_lines = 1;
 	int height = 10;
 	int offset = 1;	
@@ -76,6 +84,10 @@ public class MMOInfo extends MMOPlugin implements Listener {
 	@Override
 	public void loadConfiguration(FileConfiguration cfg) {
 		token_lines = cfg.getInt("tokenlines", token_lines);		
+		config_hidehungergui = cfg.getBoolean("HideDefaultHungerBar", config_hidehungergui);
+		config_hidehealthgui = cfg.getBoolean("HideDefaultHealthBar", config_hidehealthgui);
+		config_hidearmorgui = cfg.getBoolean("HideDefaultArmorBar", config_hidearmorgui);
+		config_hideexpgui = cfg.getBoolean("HideDefaultexpBar", config_hideexpgui);
 		if (token_lines >= 1) {
 			config_info1 = cfg.getString("info", config_info1);
 		}
@@ -101,16 +113,46 @@ public class MMOInfo extends MMOPlugin implements Listener {
 						|| (event.getAnchor() == WidgetAnchor.TOP_CENTER) || (event
 								.getAnchor() == WidgetAnchor.TOP_RIGHT)))
 
-			event.setOffsetY(event.getOffsetY() + this.height + this.offset + 1); //
-	}
+			event.setOffsetY(event.getOffsetY() + this.height + this.offset + 1); 		
+	}	
 
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onPlayerTeleport(PlayerTeleportEvent event) {
+		if (event.isCancelled())
+			return;				
+		final SpoutPlayer sPlayer = SpoutManager.getPlayer(event.getPlayer()); 
+		// Schedule a Hide Call since Minecraft is stupid and re-enables this each teleport.
+		// This event is also executed onPlayerLogin() no need to schedule it twice.		
+		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+			public void run() {
+				hideDefaultGui(sPlayer);
+			}
+		}, 60L); // 3 Seconds in theory should be long enough...
+	}
+	
+	public void hideDefaultGui(SpoutPlayer sPlayer) {
+		if (config_hidehungergui = true) {
+			sPlayer.getMainScreen().getHungerBar().setVisible(false);
+		}
+		if (config_hidehealthgui = true) {
+			sPlayer.getMainScreen().getHealthBar().setVisible(false);			
+		}
+		if (config_hidearmorgui = true) {
+			sPlayer.getMainScreen().getArmorBar().setVisible(false);
+		}
+		if (config_hideexpgui = true) {
+			sPlayer.getMainScreen().getExpBar().setVisible(false);
+		}		
+		 sPlayer.getMainScreen().setDirty(true);		 
+	}
+	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onMMOInfo(MMOInfoEvent event) {
 		if (event.isToken("name")) {
 			SpoutPlayer player = event.getPlayer();
 			event.setWidget(this.plugin, new GenericLabel(MMO.getName(player))
 			.setResize(true).setFixed(true));
-		}
+		}	
 	}
 
 	@Override
@@ -123,6 +165,7 @@ public class MMOInfo extends MMOPlugin implements Listener {
 		return false;
 	}
 
+	
 	@EventHandler
 	public void onSpoutcraftEnable(SpoutCraftEnableEvent e) {
 		onSpoutCraftPlayer(e.getPlayer());
