@@ -36,6 +36,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -120,9 +121,17 @@ public class MMOInfo extends MMOPlugin implements Listener {
 	public void onPlayerTeleport(PlayerTeleportEvent event) {
 		if (event.isCancelled())
 			return;				
+		final SpoutPlayer sPlayer = SpoutManager.getPlayer(event.getPlayer());				
+		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+			public void run() {
+				hideDefaultGui(sPlayer);
+			}
+		}, 60L); // 3 Seconds in theory should be long enough...
+	}
+	
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onPlayerRespawn(PlayerRespawnEvent event) {				
 		final SpoutPlayer sPlayer = SpoutManager.getPlayer(event.getPlayer()); 
-		// Schedule a Hide Call since Minecraft is stupid and re-enables this each teleport.
-		// This event is also executed onPlayerLogin() no need to schedule it twice.		
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			public void run() {
 				hideDefaultGui(sPlayer);
@@ -169,6 +178,7 @@ public class MMOInfo extends MMOPlugin implements Listener {
 	@EventHandler
 	public void onSpoutcraftEnable(SpoutCraftEnableEvent e) {
 		onSpoutCraftPlayer(e.getPlayer());
+		hideDefaultGui(e.getPlayer());
 	}
 
 	public void onSpoutCraftPlayer(SpoutPlayer player) {
