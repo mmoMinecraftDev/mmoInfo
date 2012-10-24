@@ -1,5 +1,6 @@
 /*
- * This file is part of mmoInfo <http://github.com/mmoMinecraftDev/mmoInfo>.
+ * This file is part of mmoInfo <http://github.com/mmoMinecraftDev/mmoInfo>,
+ * which is part of mmoMinecraft <http://github.com/mmoMinecraftDev>.
  *
  * mmoInfo is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -8,11 +9,11 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package mmo.Info;
 
@@ -36,6 +37,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.plugin.Plugin;
@@ -126,7 +128,7 @@ public class MMOInfo extends MMOPlugin implements Listener {
 			public void run() {
 				hideDefaultGui(sPlayer);
 			}
-		}, 60L); // 3 Seconds in theory should be long enough...
+		}, 60L); 
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
@@ -136,7 +138,17 @@ public class MMOInfo extends MMOPlugin implements Listener {
 			public void run() {
 				hideDefaultGui(sPlayer);
 			}
-		}, 60L); // 3 Seconds in theory should be long enough...
+		}, 60L); 
+	}
+	
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onPlayerGameModeChange(PlayerGameModeChangeEvent event) {	
+		final SpoutPlayer sPlayer = SpoutManager.getPlayer(event.getPlayer());
+		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+			public void run() {
+				hideDefaultGui(sPlayer);
+			}
+		}, 60L); 
 	}
 
 	public void hideDefaultGui(SpoutPlayer sPlayer) {
