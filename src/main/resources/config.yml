@@ -4,8 +4,8 @@ info: '{name}~mmoMinecraft~{coords}'
 info2: ~~
 info3: ~~
 info4: ~~
-HideDefaultHealthBar: true
-HideDefaultExpBar: true
-HideDefaultHungerBar: true
-HideDefaultArmorBar: true
+HideDefaultHealthBar: false
+HideDefaultExpBar: false
+HideDefaultHungerBar: false
+HideDefaultArmorBar: false
 HideDefaultOxygenBar: false
