@@ -68,6 +68,7 @@ public class MMOInfo extends MMOPlugin implements Listener {
 	static boolean config_hidehealthgui = false;
 	static boolean config_hidearmorgui = false;
 	static boolean config_hideexpgui = false;
+	static boolean config_hideoxygengui = false;
 	static int token_lines = 1;
 	int height = 10;
 	int offset = 1;	
@@ -91,6 +92,7 @@ public class MMOInfo extends MMOPlugin implements Listener {
 		config_hidehealthgui = cfg.getBoolean("HideDefaultHealthBar", config_hidehealthgui);
 		config_hidearmorgui = cfg.getBoolean("HideDefaultArmorBar", config_hidearmorgui);
 		config_hideexpgui = cfg.getBoolean("HideDefaultexpBar", config_hideexpgui);
+		config_hideoxygengui = cfg.getBoolean("HideDefaultOxygenBar", config_hideoxygengui);
 		if (token_lines >= 1) {
 			config_info1 = cfg.getString("info", config_info1);
 		}
@@ -163,6 +165,9 @@ public class MMOInfo extends MMOPlugin implements Listener {
 		}
 		if (config_hideexpgui = true) {
 			sPlayer.getMainScreen().getExpBar().setVisible(false);
+		}
+		if (config_hideoxygengui = true) {
+			sPlayer.getMainScreen().getBubbleBar().setVisible(false);
 		}	
 		sPlayer.getMainScreen().setDirty(true);	
 	}

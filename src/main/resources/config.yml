@@ -1,2 +1,11 @@
 # #Info Configuration
-info: '{name}{gold}~mmoMinecraft~{compass}{coords}'
+tokenlines: 1
+info: '{name}~mmoMinecraft~{coords}'
+info2: ~~
+info3: ~~
+info4: ~~
+HideDefaultHealthBar: true
+HideDefaultExpBar: true
+HideDefaultHungerBar: true
+HideDefaultArmorBar: true
+HideDefaultOxygenBar: false
