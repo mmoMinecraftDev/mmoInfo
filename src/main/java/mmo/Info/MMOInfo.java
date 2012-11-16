@@ -237,7 +237,7 @@ public class MMOInfo extends MMOPlugin implements Listener {
 					.setLayout(ContainerType.HORIZONTAL)
 					.setAlign(WidgetAnchor.TOP_LEFT)
 					.setAnchor(WidgetAnchor.TOP_LEFT).setWidth(427)
-					.setHeight(10).setX(0).setFixed(true).setY(this.offset));
+					.setHeight(10).setX(0).setY(this.offset));
 
 			Container center;
 			screen.attachWidget(
@@ -246,7 +246,7 @@ public class MMOInfo extends MMOPlugin implements Listener {
 					.setLayout(ContainerType.HORIZONTAL)
 					.setAlign(WidgetAnchor.TOP_CENTER)
 					.setAnchor(WidgetAnchor.TOP_CENTER).setWidth(427)
-					.setHeight(10).setX(-213).setFixed(true).setY(this.offset));
+					.setHeight(10).setX(-213).setY(this.offset));
 
 			Container right;
 			screen.attachWidget(
@@ -255,7 +255,7 @@ public class MMOInfo extends MMOPlugin implements Listener {
 					.setLayout(ContainerType.HORIZONTAL)
 					.setAlign(WidgetAnchor.TOP_RIGHT)
 					.setAnchor(WidgetAnchor.TOP_RIGHT).setWidth(427)
-					.setHeight(10).setX(-427).setFixed(true).setY(this.offset));
+					.setHeight(10).setX(-427).setY(this.offset));
 
 			Container current = left;
 			Matcher match = Pattern.compile("[^{~]+|(~)|\\{([^}]*)\\}")
@@ -305,7 +305,7 @@ public class MMOInfo extends MMOPlugin implements Listener {
 					.setLayout(ContainerType.HORIZONTAL)
 					.setAlign(WidgetAnchor.TOP_LEFT)
 					.setAnchor(WidgetAnchor.TOP_LEFT).setWidth(427)
-					.setHeight(10).setX(0).setFixed(true).setY(this.offset+10));
+					.setHeight(10).setX(0).setY(this.offset+this.offset+10));
 
 			Container center2;
 			screen.attachWidget(
@@ -314,7 +314,7 @@ public class MMOInfo extends MMOPlugin implements Listener {
 					.setLayout(ContainerType.HORIZONTAL)
 					.setAlign(WidgetAnchor.TOP_CENTER)
 					.setAnchor(WidgetAnchor.TOP_CENTER).setWidth(427)
-					.setHeight(10).setX(-213).setFixed(true).setY(this.offset+10));
+					.setHeight(10).setX(-213).setY(this.offset+this.offset+10));
 
 			Container right2;
 			screen.attachWidget(
@@ -323,7 +323,7 @@ public class MMOInfo extends MMOPlugin implements Listener {
 					.setLayout(ContainerType.HORIZONTAL)
 					.setAlign(WidgetAnchor.TOP_RIGHT)
 					.setAnchor(WidgetAnchor.TOP_RIGHT).setWidth(427)	
-					.setHeight(10).setX(-427).setFixed(true).setY(this.offset+10));
+					.setHeight(10).setX(-427).setY(this.offset+this.offset+10));
 
 			Container current = left2;
 			Matcher match2 = Pattern.compile("[^{~]+|(~)|\\{([^}]*)\\}").matcher(
@@ -371,7 +371,7 @@ public class MMOInfo extends MMOPlugin implements Listener {
 					.setLayout(ContainerType.HORIZONTAL)
 					.setAlign(WidgetAnchor.TOP_LEFT)
 					.setAnchor(WidgetAnchor.TOP_LEFT).setWidth(427)
-					.setHeight(10).setX(0).setFixed(true).setY(this.offset+20));
+					.setHeight(10).setX(0).setY(this.offset+this.offset+20));
 
 			Container center3;
 			screen.attachWidget(
@@ -380,7 +380,7 @@ public class MMOInfo extends MMOPlugin implements Listener {
 					.setLayout(ContainerType.HORIZONTAL)
 					.setAlign(WidgetAnchor.TOP_CENTER)
 					.setAnchor(WidgetAnchor.TOP_CENTER).setWidth(427)
-					.setHeight(10).setX(-213).setFixed(true).setY(this.offset+20));
+					.setHeight(10).setX(-213).setY(this.offset+this.offset+20));
 
 			Container right3;
 			screen.attachWidget(
@@ -389,7 +389,7 @@ public class MMOInfo extends MMOPlugin implements Listener {
 					.setLayout(ContainerType.HORIZONTAL)
 					.setAlign(WidgetAnchor.TOP_RIGHT)
 					.setAnchor(WidgetAnchor.TOP_RIGHT).setWidth(427)	
-					.setHeight(10).setX(-427).setFixed(true).setY(this.offset+20));
+					.setHeight(10).setX(-427).setY(this.offset+this.offset+20));
 
 			Container current = left3;
 			Matcher match2 = Pattern.compile("[^{~]+|(~)|\\{([^}]*)\\}").matcher(
@@ -437,7 +437,7 @@ public class MMOInfo extends MMOPlugin implements Listener {
 					.setLayout(ContainerType.HORIZONTAL)
 					.setAlign(WidgetAnchor.TOP_LEFT)
 					.setAnchor(WidgetAnchor.TOP_LEFT).setWidth(427)
-					.setHeight(10).setX(0).setFixed(true).setY(this.offset+30));
+					.setHeight(10).setX(0).setY(this.offset+this.offset+30));
 
 			Container center4;
 			screen.attachWidget(
@@ -446,7 +446,7 @@ public class MMOInfo extends MMOPlugin implements Listener {
 					.setLayout(ContainerType.HORIZONTAL)
 					.setAlign(WidgetAnchor.TOP_CENTER)
 					.setAnchor(WidgetAnchor.TOP_CENTER).setWidth(427)
-					.setHeight(10).setX(-213).setFixed(true).setY(this.offset+30));
+					.setHeight(10).setX(-213).setY(this.offset+this.offset+30));
 
 			Container right4;
 			screen.attachWidget(
@@ -455,7 +455,7 @@ public class MMOInfo extends MMOPlugin implements Listener {
 					.setLayout(ContainerType.HORIZONTAL)
 					.setAlign(WidgetAnchor.TOP_RIGHT)
 					.setAnchor(WidgetAnchor.TOP_RIGHT).setWidth(427)	
-					.setHeight(10).setX(-427).setFixed(true).setY(this.offset+30));
+					.setHeight(10).setX(-427).setY(this.offset+this.offset+30));
 
 			Container current = left4;
 			Matcher match2 = Pattern.compile("[^{~]+|(~)|\\{([^}]*)\\}").matcher(
