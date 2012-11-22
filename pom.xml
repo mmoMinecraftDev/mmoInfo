@@ -6,7 +6,7 @@
 	<name>mmoInfo</name>
 	<groupId>mmo.Info</groupId>
 	<artifactId>mmoInfo</artifactId>
-	<version>1.41-SNAPSHOT</version>
+	<version>1.42</version>
 	<url>http://github.com/mmoMinecraftDev/mmoInfo</url>
 	<description>Provides a modular info bar at the top of the screen.</description>
 
