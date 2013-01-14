@@ -128,9 +128,10 @@ public class MMOInfo extends MMOPlugin implements Listener {
 		final SpoutPlayer sPlayer = SpoutManager.getPlayer(event.getPlayer());	
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			public void run() {
+				onSpoutCraftPlayer(sPlayer);
 				hideDefaultGui(sPlayer);
 			}
-		}, 60L); 
+		}, 20L); 
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
@@ -138,9 +139,10 @@ public class MMOInfo extends MMOPlugin implements Listener {
 		final SpoutPlayer sPlayer = SpoutManager.getPlayer(event.getPlayer());
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			public void run() {
+				onSpoutCraftPlayer(sPlayer);
 				hideDefaultGui(sPlayer);
 			}
-		}, 60L); 
+		}, 20L); 
 	}
 	
 	@EventHandler(priority = EventPriority.NORMAL)
@@ -148,9 +150,10 @@ public class MMOInfo extends MMOPlugin implements Listener {
 		final SpoutPlayer sPlayer = SpoutManager.getPlayer(event.getPlayer());
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			public void run() {
+				onSpoutCraftPlayer(sPlayer);
 				hideDefaultGui(sPlayer);
 			}
-		}, 60L); 
+		}, 20L); 
 	}
 
 	public void hideDefaultGui(SpoutPlayer sPlayer) {
