@@ -18,6 +18,9 @@
 package mmo.Info;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import mmo.Core.CoreAPI.MMOHUDEvent;
@@ -28,6 +31,8 @@ import mmo.Core.MMO;
 import mmo.Core.MMOPlugin;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Server;
 import org.bukkit.block.Furnace;
 import org.bukkit.command.Command;
@@ -37,6 +42,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -60,6 +66,7 @@ import org.getspout.spoutapi.gui.WidgetAnchor;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class MMOInfo extends MMOPlugin implements Listener {
+	private static final Map<UUID, Boolean> userOptions = new HashMap<UUID, Boolean>();
 	static String config_info1 = "{name}~mmoMinecraft~{compass}{coords}";
 	static String config_info2 = config_info1;
 	static String config_info3 = config_info1;
@@ -72,6 +79,7 @@ public class MMOInfo extends MMOPlugin implements Listener {
 	static int token_lines = 1;
 	int height = 10;
 	int offset = 1;	
+
 
 	@Override
 	public EnumBitSet mmoSupport(EnumBitSet support) {
@@ -91,7 +99,7 @@ public class MMOInfo extends MMOPlugin implements Listener {
 		config_hidehungergui = cfg.getBoolean("HideDefaultHungerBar", config_hidehungergui);
 		config_hidehealthgui = cfg.getBoolean("HideDefaultHealthBar", config_hidehealthgui);
 		config_hidearmorgui = cfg.getBoolean("HideDefaultArmorBar", config_hidearmorgui);
-		config_hideexpgui = cfg.getBoolean("HideDefaultexpBar", config_hideexpgui);
+		config_hideexpgui = cfg.getBoolean("HideDefaultExpBar", config_hideexpgui);
 		config_hideoxygengui = cfg.getBoolean("HideDefaultOxygenBar", config_hideoxygengui);
 		if (token_lines >= 1) {
 			config_info1 = cfg.getString("info", config_info1);
@@ -122,16 +130,13 @@ public class MMOInfo extends MMOPlugin implements Listener {
 	}	
 
 	@EventHandler(priority = EventPriority.NORMAL)
-	public void onPlayerTeleport(PlayerTeleportEvent event) {
-		if (event.isCancelled())
-			return;	
-		final SpoutPlayer sPlayer = SpoutManager.getPlayer(event.getPlayer());	
-		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-			public void run() {
-				onSpoutCraftPlayer(sPlayer);
-				hideDefaultGui(sPlayer);
-			}
-		}, 20L); 
+	public void onPlayerChangedWorld(PlayerChangedWorldEvent event) {		
+			final SpoutPlayer sPlayer = SpoutManager.getPlayer(event.getPlayer());	
+			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+				public void run() {
+					onSpoutCraftPlayer(sPlayer);				
+				}
+			}, 20L);		
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
@@ -139,39 +144,46 @@ public class MMOInfo extends MMOPlugin implements Listener {
 		final SpoutPlayer sPlayer = SpoutManager.getPlayer(event.getPlayer());
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			public void run() {
-				onSpoutCraftPlayer(sPlayer);
-				hideDefaultGui(sPlayer);
+				onSpoutCraftPlayer(sPlayer);				
 			}
 		}, 20L); 
 	}
-	
+
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerGameModeChange(PlayerGameModeChangeEvent event) {	
 		final SpoutPlayer sPlayer = SpoutManager.getPlayer(event.getPlayer());
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			public void run() {
-				onSpoutCraftPlayer(sPlayer);
-				hideDefaultGui(sPlayer);
+				onSpoutCraftPlayer(sPlayer);				
 			}
 		}, 20L); 
 	}
 
-	public void hideDefaultGui(SpoutPlayer sPlayer) {
-		if (config_hidehungergui = true) {
+	public void hideDefaultGui(SpoutPlayer sPlayer) {		
+		if (config_hidehungergui) {
 			sPlayer.getMainScreen().getHungerBar().setVisible(false);
 		}
-		if (config_hidehealthgui = true) {
+		if (config_hidehealthgui) {
 			sPlayer.getMainScreen().getHealthBar().setVisible(false);	
 		}
-		if (config_hidearmorgui = true) {
+		if (config_hidearmorgui) {
 			sPlayer.getMainScreen().getArmorBar().setVisible(false);
 		}
-		if (config_hideexpgui = true) {
+		if (config_hideexpgui) {
 			sPlayer.getMainScreen().getExpBar().setVisible(false);
 		}
-		if (config_hideoxygengui = true) {
+		if (config_hideoxygengui) {
 			sPlayer.getMainScreen().getBubbleBar().setVisible(false);
 		}	
+		sPlayer.getMainScreen().setDirty(true);		
+	}
+
+	public void showDefaultGui(SpoutPlayer sPlayer) {
+		sPlayer.getMainScreen().getHungerBar().setVisible(true);
+		sPlayer.getMainScreen().getHealthBar().setVisible(true);	
+		sPlayer.getMainScreen().getArmorBar().setVisible(true);
+		sPlayer.getMainScreen().getExpBar().setVisible(true);
+		sPlayer.getMainScreen().getBubbleBar().setVisible(true);
 		sPlayer.getMainScreen().setDirty(true);	
 	}
 
@@ -185,26 +197,52 @@ public class MMOInfo extends MMOPlugin implements Listener {
 	}
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command command,
-			String label, String[] args) {
-		if (command.getName().equalsIgnoreCase("info")) {
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		if (command.getName().equalsIgnoreCase("showgui")) {
+			userOptions.put(SpoutManager.getPlayer((Player) sender).getUniqueId(), true);			
 			onSpoutCraftPlayer(SpoutManager.getPlayer((Player) sender));
 			return true;
 		}
+
+		if (command.getName().equalsIgnoreCase("hidegui")) {			
+			userOptions.put(SpoutManager.getPlayer((Player) sender).getUniqueId(), false);
+			hideMMOInfo(SpoutManager.getPlayer((Player) sender));
+			showDefaultGui(SpoutManager.getPlayer((Player) sender));	
+			return true;
+		}		
 		return false;
 	}
 
-
 	@EventHandler
-	public void onSpoutcraftEnable(SpoutCraftEnableEvent e) {
-		onSpoutCraftPlayer(e.getPlayer());
-		hideDefaultGui(e.getPlayer());
+	public void onSpoutcraftEnable(SpoutCraftEnableEvent e) {		
+		if (!userOptions.containsKey(e.getPlayer().getUniqueId())) {
+			userOptions.put(e.getPlayer().getUniqueId(), true);		
+		} else {
+			// Key alreayd exists
+		}
+		onSpoutCraftPlayer(e.getPlayer());		
+	}
+
+	public void hideMMOInfo(SpoutPlayer player) {	
+		Screen screen = player.getMainScreen();
+		screen.removeWidgets(this);		
 	}
 
 	public void onSpoutCraftPlayer(SpoutPlayer player) {
 		if (!player.hasPermission("mmo.info.display")) {
 			return;
 		}
+
+		final boolean showGUI = userOptions.containsKey(player.getUniqueId()) ? userOptions.get(player.getUniqueId()) : true;
+
+		if (!showGUI) {		
+			if (player.getGameMode() != GameMode.CREATIVE) {
+				showDefaultGui(player);
+			}
+			return;
+		}
+
+		hideDefaultGui(player);
 
 		// Global Settings
 		Color back = new Color(0.0F, 0.0F, 0.0F, 0.75F);
@@ -497,6 +535,5 @@ public class MMOInfo extends MMOPlugin implements Listener {
 								.setMargin(0, 3).setFixed(true));
 				}
 		}
-
 	}
 }

@@ -8,7 +8,11 @@ main: mmo.Info.MMOInfo
 depend: [Spout, mmoCore]
 
 commands:
-    info:
+    showgui:
+        description: Set the info to display
+        aliases: [mmoinfo]
+        usage: /info [three columns separated by ~, tokens within {}]
+    hidegui:
         description: Set the info to display
         aliases: [mmoinfo]
         usage: /info [three columns separated by ~, tokens within {}]
@@ -20,3 +24,6 @@ permissions:
     mmo.info.display:
         description: Shows the info bar
         default: true
+    mmo.info.hidegui:
+        description: allows player to hide GUI
+        default: op   
